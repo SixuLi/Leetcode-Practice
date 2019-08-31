@@ -1,0 +1,47 @@
+class Solution:
+    # My Solution
+    def findMedianSortedArrays_1(self, nums1: List[int], nums2: List[int]) -> float:
+        p1, p2 = 0, 0
+        bind_list = []
+        while p1 < len(nums1) and p2 < len(nums2):
+            if nums1[p1] > nums2[p2]:
+                bind_list.append(nums2[p2])
+                p2 += 1
+            else:
+                bind_list.append(nums1[p1])
+                p1 += 1
+        while p2 != len(nums2):
+            bind_list.append(nums2[p2])
+            p2 += 1
+        while p1 != len(nums1):
+            bind_list.append(nums1[p1])
+            p1 += 1
+        if len(bind_list) % 2 == 0:
+            res = (bind_list[len(bind_list) // 2 - 1] +
+                   bind_list[len(bind_list) // 2]) / 2
+        else:
+            res = bind_list[(len(bind_list) - 1) // 2]
+        return res
+    
+    # Find the Kth Smallest Number
+    def getKth(self, A, B, k):
+        lenA, lenB = len(A), len(B)
+        if lenA > len(B):
+            return self.getKth(B, A, k)
+        if lenA == 0:
+            return B[k - 1]
+        if k == 1:
+            return min(A[0], B[0])
+        pa = int(min(k / 2, lenA))
+        pb = k - pa
+        if A[pa - 1] <= B[pb - 1]:
+            return self.getKth(A[pa:], B, pb)
+        else:
+            return self.getKth(A, B[pb:], pa)
+
+    def findMedianSortedArrays_2(self, nums1: List[int], nums2: List[int]) -> float:
+        lenA, lenB = len(nums1), len(nums2)
+        if (lenA + lenB) % 2 == 1:
+            return self.getKth(nums1, nums2, (lenA + lenB + 1) // 2)
+        else:
+            return (self.getKth(nums1, nums2, (lenA + lenB) // 2) + self.getKth(nums1, nums2, (lenA + lenB) // 2 + 1)) / 2
