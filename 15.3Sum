@@ -1,0 +1,28 @@
+class Solution:
+    # Solution 1 Dual Pointer
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        i = 0
+        while i < len(nums) - 2:
+            if nums[i] != nums[i-1] or i == 0:
+                if nums[i] > 0:
+                    break
+                l, r = i+1, len(nums) - 1
+                while l < r:
+                    if nums[l] + nums[r] + nums[i] == 0:
+                        res.append([nums[i], nums[l], nums[r]])
+                        while l < r:
+                            l += 1
+                            if nums[l] != nums[l-1]:
+                                break
+                        while l < r:
+                            r -= 1
+                            if nums[r] != nums[r+1]:
+                                break
+                    elif nums[l] + nums[r] > -nums[i]:
+                        r -= 1
+                    elif nums[l] + nums[r] < -nums[i]:
+                        l += 1
+            i += 1
+        return res
