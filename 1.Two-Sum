@@ -1,9 +1,0 @@
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        keys = {}
-        for i in range(len(nums)):
-            if target - nums[i] in keys:
-                return [i, keys[nums[i]]]
-            if nums[i] not in keys:
-                keys[nums[i]] = i
-            
