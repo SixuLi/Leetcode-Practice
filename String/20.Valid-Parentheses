@@ -1,0 +1,18 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        List = []
+        keys = {'(': ')', '[': ']', '{': '}'}
+        for string in s:
+            if string in keys:
+                List.append(string)
+            elif string in keys.values():
+                if len(List) != 0:
+                    cur = List.pop()
+                    if keys[cur] != string:
+                        return False
+                else:
+                    return False
+        if len(List) == 0:
+            return True
+        else:
+            return False
