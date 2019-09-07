@@ -1,0 +1,52 @@
+class Solution:
+    def isNumber(self, num):
+        return True if (num >= "0" and num <= '9') else False
+
+    def isSymbol(self, s):
+        return True if (s == "+" or s == "-") else False
+
+    def myAtoi(self, str: str) -> int:
+        s = str
+        for i in range(len(str)):
+            if str[i] == ' ':
+                continue
+            else:
+                s = str[i:] + '#'
+                break
+        n = len(s)
+        if n == 0:
+            return 0
+        if n == 1 and self.isNumber(s[0]):
+            return int(s[0])
+        if n == 1 and not self.isNumber(s[0]):
+            return 0
+
+        if self.isNumber(s[0]):
+            i = 0
+            for i in range(n):
+                if self.isNumber(s[i]):
+                    continue
+                else:
+                    break
+            return int(s[:i]) if int(s[:i]) <= 2**31 - 1 else 2**31 - 1
+        elif self.isSymbol(s[0]):
+            positive = 1 if s[0] == "+" else -1
+            i = 1
+            if self.isNumber(s[i]) == False:
+                return 0
+            else:
+                j = i
+                for j in range(i, n):
+                    if self.isNumber(s[j]):
+                        continue
+                    else:
+                        break
+                res = int(s[i:j]) * positive
+                if res < -2**31:
+                    return -2**31
+                elif res >= 2**31 - 1:
+                    return 2**31 - 1
+                else:
+                    return res
+        else:
+            return 0
