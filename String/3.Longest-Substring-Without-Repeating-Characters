@@ -1,0 +1,47 @@
+class Solution:
+    # Solution 1 虫取法
+    def lengthOfLongestSubstring_1(self, s: str) -> int:
+        left, right = 0, 0
+        chars = set()
+        res = 0
+        while left < len(s) and right < len(s):
+            if s[right] in chars:
+                if s[left] in chars:
+                    chars.remove(s[left])
+                    left += 1
+            if s[right] not in chars:
+                chars.add(s[right])
+                right += 1
+            res = max(res, len(chars))
+        return res
+ 
+
+    # Solution 2 两次遍历+字典
+    def lengthOfLongestSubstring_2(self, s: str) -> int:
+        res = 0
+        for i in range(len(s)):
+            keys = {}
+            count = 0
+            for j in range(i, len(s)):
+                if s[j] not in keys:
+                    keys[s[j]] = j
+                    count += 1
+                else:
+                    break
+            res = max(res, count)
+        return res
+
+    # Solution 3 一次遍历+字典
+    def lengthOfLongestSubstring_3(self, s: str) -> int:
+            left, right = 0, 0
+            chars = {}
+            res = 0
+            for right in range(len(s)):
+                if s[right] in chars:
+                    left = max(left, chars[s[right]] + 1)
+                chars[s[right]] = right
+                res = max(res, right - left + 1)
+            return res
+
+
+
