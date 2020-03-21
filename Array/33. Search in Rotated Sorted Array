@@ -1,3 +1,4 @@
+# Solution 1
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         numsLen = len(nums)
@@ -19,3 +20,38 @@ class Solution:
                 else:
                     l = mid+1
         return -1
+
+# Solution 2: Two binary search
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        if not nums:
+            return -1
+        
+        def find_pivot(nums):
+            numsLen = len(nums)
+            left, right = 0, numsLen-1
+            while left < right-1:
+                mid = (left+right) // 2
+                if nums[mid] > nums[right]:
+                    left = mid
+                else:
+                    right = mid
+            return left if nums[left] < nums[right] else right
+        
+        def find_target(nums, left, right):
+            while left <= right:
+                mid = (left+right) // 2
+                if nums[mid] == target:
+                    return mid
+                elif nums[mid] > target:
+                    right = mid-1
+                else:
+                    left = mid+1
+            return -1
+        
+        pivot = find_pivot(nums)
+        if nums[pivot] <= target and target <= nums[len(nums)-1]:
+            left, right = pivot, len(nums) - 1
+        else:
+            left, right = 0, pivot
+        return find_target(nums, left, right)
