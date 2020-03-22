@@ -1,0 +1,37 @@
+# Solution 1: DFS + Remove Duplicates(Using Set)
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = set()
+        candidates.sort()
+        self.dfs(candidates, target, 0, res, ())
+        return [list(i) for i in res]
+    
+    def dfs(self, nums, target, index, res, path):
+        if target < 0:
+            return
+        elif target == 0:
+            res.add(path)
+        for i in range(index, len(nums)):
+            if nums[index] > target:
+                return
+            self.dfs(nums, target-nums[i], i+1, res, path+(nums[i],))
+
+# Solution 2: DFS + Remove Duplicates(Directly Remove)
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        candidates.sort()
+        self.dfs(candidates, target, 0, res, [])
+        return res
+    
+    def dfs(self, nums, target, index, res, path):
+        if target < 0:
+            return
+        elif target == 0:
+            res.append(path)
+        for i in range(index, len(nums)):
+            if nums[index] > target:
+                return
+            if i != index and nums[i-1] == nums[i]:
+                continue
+            self.dfs(nums, target-nums[i], i+1, res, path+[nums[i]])
