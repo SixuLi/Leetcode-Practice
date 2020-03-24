@@ -1,0 +1,34 @@
+# Solution 1: Dynamic Programming
+# Assume the at the ith position, we consider about the remain maximum jump step dp[i]. 
+# dp[i] is determined by the remain maximum jump step of (i-1) position, i.e, dp[i-1], 
+# and the new jump step at (i-1)th position, i.e, nums[i-1]. Hence, we can write the recursive function as
+# dp[i] = max(dp[i-1], nums[i-1]) - 1
+# If dp[i] < 0, this implies that, actually we can not arrive the ith position, which means that we can never reach the last component.
+# So, at this case, we can return False.
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if not nums:
+            return true
+        n = len(nums)
+        dp = [0 for _ in range(n)]
+        dp[0] = nums[0]
+        for i in range(1, n):
+            dp[i] = max(dp[i-1], nums[i-1]) - 1
+            if dp[i] < 0:
+                return False
+        return True
+
+# Solution 2: Greedy Algorithm
+# At the ith postion, the furthest postion it can reach is reach[i] = i+nums[i]. 
+# Besides, we need to decide whether the ith position is achievale, i.e, to compare i and reach[i-1].
+# Hence, we can the whole array, if i > reach[i-1], we will stop the scan and return False.
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        if not nums:
+            return True
+        reach, n = 0, len(nums)
+        for i in range(n):
+            if i > reach or reach >= n-1:
+                break
+            reach = max(reach, i+nums[i])
+        return reach >= n-1
