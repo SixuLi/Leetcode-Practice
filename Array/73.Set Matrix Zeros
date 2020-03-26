@@ -1,0 +1,47 @@
+# Solution 1: My Solution
+# Time Complexity: O(M*N)
+# Space Complexity: O(M+N)
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        index_pair = []
+        m, n = len(matrix), len(matrix[0])
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == 0:
+                    index_pair.append([i,j])
+        for k in index_pair:
+            for i in range(m):
+                matrix[i][k[1]] = 0
+            for j in range(n):
+                matrix[k[0]][j] = 0
+
+# Solution 2:
+# Time Complexity: O(M*N)
+# Space Complexity: O(1)
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        m, n = len(matrix), len(matrix[0])
+        is_col = False
+        for i in range(m):
+            if matrix[i][0] == 0:
+                is_col = True
+            for j in range(1,n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+        if matrix[0][0] == 0:
+            for j in range(n):
+                matrix[0][j] = 0
+        if is_col:
+            for i in range(m):
+                matrix[i][0] = 0
