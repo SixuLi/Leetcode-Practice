@@ -24,3 +24,46 @@ class Solution:
                     else:
                         stack.append(i)
         return maxlen
+
+# Solution 2: Dynamic Programming
+# We make use of a dp array where ith element of dp represents the length of the longest valid substring ending at ith index.
+# There are two cases:
+# 1. If s[i] == ")" and s[i-1] == "(", then dp[i] = dp[i-2] + 2
+# 2. If s[i] == ")" and s[i-1] == ")", then dp[i] = dp[i-1] + dp[i - dp[i-1] - 2] + 2
+
+class Solution:
+    def longestValidParentheses(self, s: str) -> int:
+        s = "#" + s
+        n = len(s)
+        dp = n * [0]
+        for i in range(2,n):
+            if s[i] == ")" and s[i-1] == "(":
+                dp[i] = dp[i-2] + 2
+            elif s[i] == ")" and s[i-1] == ")":
+                if s[i - dp[i-1] - 1] == "(":
+                    dp[i] = dp[i-1] + dp[i - dp[i-1] - 2] + 2
+        return max(dp)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
