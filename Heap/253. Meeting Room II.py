@@ -6,7 +6,7 @@
 import heapq
 
 class Solution:
-    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+    def minMeetingRooms(self, intervals):
         if not intervals:
             return 0
 
