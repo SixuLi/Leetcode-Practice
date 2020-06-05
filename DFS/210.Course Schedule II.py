@@ -39,3 +39,48 @@ class Solution:
         path[currCourse] = False
         visited[currCourse] = True
         return res
+
+# Solution 2: Topological Sort
+
+# Time Complexity: O(E + V)
+# Space Complexity: O(E + V)
+
+from collections import Counter, defaultdict
+
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        c = Counter()
+        graph = defaultdict(list)
+        ready = []
+        topo = []
+
+        for nextCourse, preCourse in prerequisites:
+            c[nextCourse] += 1
+            graph[preCourse].append(nextCourse)
+
+        for u in range(numCourses):
+            if c[u] == 0:
+                ready.append(u)
+
+        while ready:
+            u = ready.pop()
+            topo.append(u)
+            for v in graph[u]:
+                c[v] -= 1
+                if c[v] == 0:
+                    ready.append(v)
+
+        return topo if len(topo) == numCourses else []
+
+
+
+
+
+
+
+
+
+
+
+

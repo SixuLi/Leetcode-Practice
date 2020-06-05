@@ -77,6 +77,40 @@ class Solution:
         visited[currCourse] = True
         return res
 
+# Solution 3: Topological Sort
+
+# Time Complexity: O(E + V)
+# Space Complexity: O(E + V)
+
+from collections import Counter, defaultdict
+
+
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        if not prerequisites:
+            return True
+        c = Counter()
+        graph = defaultdict(list)
+        ready = []
+        topo = []
+
+        for nextCourse, preCourse in prerequisites:
+            c[nextCourse] += 1
+            graph[preCourse].append(nextCourse)
+
+        for u in range(numCourses):
+            if c[u] == 0:
+                ready.append(u)
+
+        while ready:
+            u = ready.pop()
+            topo.append(u)
+            for v in graph[u]:
+                c[v] -= 1
+                if c[v] == 0:
+                    ready.append(v)
+        return True if len(topo) == numCourses else False
+
 
 
 
